@@ -31,6 +31,9 @@ export function Post({ text }: IPostProps) {
           numquam fugit minima at quod sit vero cupiditate laborum assumenda
           nesciunt omnis!
         </p>
+        <p>
+          <a href="#">Teste</a>
+        </p>
       </div>
     </article>
   )
