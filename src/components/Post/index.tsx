@@ -25,10 +25,15 @@ interface IPostProps {
 }
 
 export function Post({ id, author, content, publishAt }: IPostProps) {
-  const [comments, setComments] = useState()
+  const [comments, setComments] = useState<Array<string>>([''])
+  const [commentText, setCommentText] = useState<string>('')
 
   function enviarComentario(event: SubmitEvent) {
     event.preventDefault()
+
+    setComments([...comments, commentText])
+
+    setCommentText('')
   }
 
   return (
@@ -70,16 +75,25 @@ export function Post({ id, author, content, publishAt }: IPostProps) {
         })}
       </div>
 
-      <form className={styles.commentForm} onClick={enviarComentario}>
-        <strong>Deixe seu feedback</strong>
-        <textarea placeholder="Deixe um comentário" />
+      <form className={styles.commentForm} onSubmit={enviarComentario}>
+        <strong>Deixe seu feedback!</strong>
+        <textarea
+          name="comentario"
+          placeholder="Deixe um comentário"
+          value={commentText}
+          onChange={e => setCommentText(e.target.value)}
+        />
         <button type="submit">Comentar</button>
       </form>
 
       <div className={styles.commentList}>
-        <Comment />
-        <Comment />
-        <Comment />
+        {comments.map((comment, i) => {
+          const hasComment = comment !== ''
+
+          return hasComment ? (
+            <Comment key={i.toString()} comment={comment} />
+          ) : null
+        })}
       </div>
     </article>
   )
