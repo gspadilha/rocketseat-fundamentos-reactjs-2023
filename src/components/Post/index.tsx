@@ -1,3 +1,4 @@
+import { Comment } from '../Comment'
 import styles from './Post.module.css'
 
 interface IPostProps {
@@ -41,6 +42,11 @@ export function Post({ text }: IPostProps) {
         <textarea placeholder="Deixe um comentário" />
         <button type="submit">Comentar</button>
       </form>
+      <div className={styles.commentList}>
+        <Comment />
+        <Comment />
+        <Comment />
+      </div>
     </article>
   )
 }
