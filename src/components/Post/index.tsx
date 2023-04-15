@@ -1,7 +1,11 @@
 import { dateFormatted, relativeDateFormatted } from '../../util/date'
 import { Avatar } from '../Avatar'
 import { Comment } from '../Comment'
+
+import { SubmitEvent } from '../../interfaces/global'
+
 import styles from './Post.module.css'
+import { useState } from 'react'
 
 interface IContentProps {
   id: number
@@ -21,6 +25,12 @@ interface IPostProps {
 }
 
 export function Post({ id, author, content, publishAt }: IPostProps) {
+  const [comments, setComments] = useState()
+
+  function enviarComentario(event: SubmitEvent) {
+    event.preventDefault()
+  }
+
   return (
     <article className={styles.post}>
       <header>
@@ -60,7 +70,7 @@ export function Post({ id, author, content, publishAt }: IPostProps) {
         })}
       </div>
 
-      <form className={styles.commentForm}>
+      <form className={styles.commentForm} onClick={enviarComentario}>
         <strong>Deixe seu feedback</strong>
         <textarea placeholder="Deixe um comentário" />
         <button type="submit">Comentar</button>
