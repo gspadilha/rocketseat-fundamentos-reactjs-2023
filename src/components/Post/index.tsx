@@ -61,8 +61,8 @@ export function Post({ id, author, content, publishAt }: IPostProps) {
           switch (info.type) {
             case 'link':
               return (
-                <a href="#">
-                  <p key={info.id}>{info.content}</p>
+                <a key={info.id} href="#">
+                  <p>{info.content}</p>
                 </a>
               )
 
@@ -87,12 +87,10 @@ export function Post({ id, author, content, publishAt }: IPostProps) {
       </form>
 
       <div className={styles.commentList}>
-        {comments.map((comment, i) => {
+        {comments.map(comment => {
           const hasComment = comment !== ''
 
-          return hasComment ? (
-            <Comment key={i.toString()} comment={comment} />
-          ) : null
+          return hasComment ? <Comment key={comment} comment={comment} /> : null
         })}
       </div>
     </article>
