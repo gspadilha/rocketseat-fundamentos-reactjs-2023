@@ -1,37 +1,63 @@
+import { dateFormatted, relativeDateFormatted } from '../../util/date'
 import { Avatar } from '../Avatar'
 import { Comment } from '../Comment'
 import styles from './Post.module.css'
 
-interface IPostProps {
-  text: string
+interface IContentProps {
+  id: number
+  type: string
+  content: string
 }
 
-export function Post({ text }: IPostProps) {
+interface IPostProps {
+  id: number
+  author: {
+    name: string
+    role: string
+    avatarUrl: string
+  }
+  content: Array<IContentProps>
+  publishAt: Date
+}
+
+export function Post({ id, author, content, publishAt }: IPostProps) {
   return (
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <Avatar src="https://github.com/gspadilha.png" />
+          <Avatar src={author.avatarUrl} />
+
           <div className={styles.authorInfo}>
-            <strong>Guilherme Padilha</strong>
-            <span>Developer</span>
+            <strong>{author.name}</strong>
+            <span>{author.role}</span>
           </div>
         </div>
 
-        <time dateTime="2022-04-15 07:17">Publicado a 1h</time>
+        <time
+          title={dateFormatted(publishAt)}
+          dateTime={publishAt.toISOString()}
+        >
+          Publicado {relativeDateFormatted(publishAt)}
+        </time>
       </header>
 
       <div className={styles.content}>
-        <p>Bom dia!</p>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas
-          molestias sunt placeat delectus, modi repellendus est facere atque
-          numquam fugit minima at quod sit vero cupiditate laborum assumenda
-          nesciunt omnis!
-        </p>
-        <p>
-          <a href="#">Teste</a>
-        </p>
+        {content.map(info => {
+          switch (info.type) {
+            case 'link':
+              return (
+                <a href="#">
+                  <p key={info.id}>{info.content}</p>
+                </a>
+              )
+
+            case 'paragraph':
+              return <p key={info.id}>{info.content}</p>
+
+            default:
+              return <p key={info.id}>{info.content}</p>
+          }
+        })}
       </div>
 
       <form className={styles.commentForm}>
@@ -39,6 +65,7 @@ export function Post({ text }: IPostProps) {
         <textarea placeholder="Deixe um comentário" />
         <button type="submit">Comentar</button>
       </form>
+
       <div className={styles.commentList}>
         <Comment />
         <Comment />
