@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 
 import { dateFormatted, relativeDateFormatted } from '../../util/date'
 import { Avatar } from '../Avatar'
@@ -64,6 +64,10 @@ export function Post({ id, author, content, publishAt }: IPostProps) {
     setComments([...oldComments])
   }
 
+  function validarComentario(event: FormEvent<HTMLTextAreaElement>) {
+    event.currentTarget.setCustomValidity('Este campo deve ser informado')
+  }
+
   return (
     <article className={styles.post}>
       <header>
@@ -107,9 +111,16 @@ export function Post({ id, author, content, publishAt }: IPostProps) {
           name="comentario"
           placeholder="Deixe um comentário"
           value={commentText}
-          onChange={e => setCommentText(e.target.value)}
+          onChange={e => {
+            e.currentTarget.setCustomValidity('')
+            setCommentText(e.target.value)
+          }}
+          onInvalid={validarComentario}
+          required
         />
-        <button type="submit">Comentar</button>
+        <button type="submit" disabled={commentText.length === 0}>
+          Comentar
+        </button>
       </form>
 
       <div className={styles.commentList}>
