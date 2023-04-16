@@ -41,4 +41,4 @@ export const posts = [
     ],
     publishAt: new Date('2023-04-11 10:00:00'),
   },
-]
+];

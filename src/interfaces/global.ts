@@ -1,3 +1,3 @@
-import { SyntheticEvent } from 'react'
+import { SyntheticEvent } from 'react';
 
-export type SubmitEvent = SyntheticEvent
+export type SubmitEvent = SyntheticEvent;

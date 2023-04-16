@@ -1,12 +1,12 @@
-import { Header } from './components/Header'
-import { Post } from './components/Post'
-import { SideBar } from './components/Siderbar'
+import { Header } from './components/Header';
+import { Post } from './components/Post';
+import { SideBar } from './components/Siderbar';
 
-import '../src/styles/global.css'
+import '../src/styles/global.css';
 
-import styles from './App.module.css'
+import styles from './App.module.css';
 
-import { posts } from './database/posts'
+import { posts } from './database/posts';
 
 export function App() {
   return (
@@ -22,5 +22,5 @@ export function App() {
         </main>
       </div>
     </>
-  )
+  );
 }

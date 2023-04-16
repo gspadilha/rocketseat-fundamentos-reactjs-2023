@@ -1,4 +1,4 @@
-import styles from './Header.module.css'
+import styles from './Header.module.css';
 
 export function Header() {
   return (
@@ -6,5 +6,5 @@ export function Header() {
       <span>X</span>
       <strong>Feed</strong>
     </header>
-  )
+  );
 }
