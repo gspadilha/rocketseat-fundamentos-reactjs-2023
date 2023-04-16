@@ -1,4 +1,4 @@
-import { MouseEvent } from 'react'
+import { MouseEvent, useState } from 'react'
 import { Trash, ThumbsUp } from 'phosphor-react'
 import { Avatar } from '../Avatar'
 
@@ -27,6 +27,8 @@ interface ICommentProps {
 }
 
 export function Comment({ comment, deleteComment }: ICommentProps) {
+  const [likeCount, setLikeCount] = useState(0)
+
   return (
     <div className={styles.comment}>
       <Avatar src="https://github.com/gspadilha.png" size="small" />
@@ -64,9 +66,9 @@ export function Comment({ comment, deleteComment }: ICommentProps) {
         </div>
 
         <footer>
-          <button>
+          <button onClick={e => setLikeCount(likeCount + 1)}>
             <ThumbsUp size={15} />
-            Aplaudir<span>10</span>
+            Aplaudir<span>{likeCount}</span>
           </button>
         </footer>
       </div>
