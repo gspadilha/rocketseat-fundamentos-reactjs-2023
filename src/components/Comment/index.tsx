@@ -1,13 +1,32 @@
+import { MouseEvent } from 'react'
 import { Trash, ThumbsUp } from 'phosphor-react'
-
-import styles from './Comment.module.css'
 import { Avatar } from '../Avatar'
 
-interface ICommentProps {
-  comment: string
+import styles from './Comment.module.css'
+
+interface IContentProps {
+  id: number
+  type: string
+  content: string
 }
 
-export function Comment({ comment }: ICommentProps) {
+interface IPostProps {
+  id: number
+  author: {
+    name: string
+    role: string
+    avatarUrl: string
+  }
+  content: Array<IContentProps>
+  publishAt: Date
+}
+
+interface ICommentProps {
+  comment: IPostProps
+  deleteComment: (id: number) => void
+}
+
+export function Comment({ comment, deleteComment }: ICommentProps) {
   return (
     <div className={styles.comment}>
       <Avatar src="https://github.com/gspadilha.png" size="small" />
@@ -18,13 +37,32 @@ export function Comment({ comment }: ICommentProps) {
               <strong>Guilherme Padilha</strong>
               <time dateTime="2022-04-15 07:17">Cerca a 1h atrás</time>
             </div>
-            <button title="Deletar Comentário">
+            <button
+              title="Deletar Comentário"
+              onClick={e => deleteComment(comment.id)}
+            >
               <Trash size={24} />
             </button>
           </header>
 
-          <p>{comment}</p>
+          <div className={styles.content}>
+            {comment.content.map(info => {
+              switch (info.type) {
+                case 'link':
+                  return (
+                    <a key={info.id} href="#">
+                      <p>{info.content}</p>
+                    </a>
+                  )
+
+                case 'paragraph':
+                default:
+                  return <p key={info.id}>{info.content}</p>
+              }
+            })}
+          </div>
         </div>
+
         <footer>
           <button>
             <ThumbsUp size={15} />

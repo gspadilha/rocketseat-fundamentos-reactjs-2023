@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { dateFormatted, relativeDateFormatted } from '../../util/date'
 import { Avatar } from '../Avatar'
 import { Comment } from '../Comment'
@@ -5,7 +7,6 @@ import { Comment } from '../Comment'
 import { SubmitEvent } from '../../interfaces/global'
 
 import styles from './Post.module.css'
-import { useState } from 'react'
 
 interface IContentProps {
   id: number
@@ -24,16 +25,43 @@ interface IPostProps {
   publishAt: Date
 }
 
+type ICommentsProps = IPostProps
+
 export function Post({ id, author, content, publishAt }: IPostProps) {
-  const [comments, setComments] = useState<Array<string>>([''])
+  const [comments, setComments] = useState<Array<ICommentsProps>>([])
   const [commentText, setCommentText] = useState<string>('')
 
   function enviarComentario(event: SubmitEvent) {
     event.preventDefault()
 
-    setComments([...comments, commentText])
+    let maior = 0
+    comments.forEach(comment => {
+      if (comment.id > maior) {
+        maior = comment.id
+      }
+    })
+    maior++
+
+    const newComment = {
+      id: maior,
+      author: {
+        name: 'string',
+        role: 'string',
+        avatarUrl: 'string',
+      },
+      content: [{ id: 1, type: 'paragraph', content: commentText }],
+      publishAt: new Date(),
+    }
+
+    setComments([...comments, newComment])
 
     setCommentText('')
+  }
+
+  function deletarComentario(id: number) {
+    const oldComments = comments.filter(comment => comment.id !== id)
+
+    setComments([...oldComments])
   }
 
   return (
@@ -43,7 +71,7 @@ export function Post({ id, author, content, publishAt }: IPostProps) {
           <Avatar src={author.avatarUrl} />
 
           <div className={styles.authorInfo}>
-            <strong>{author.name}</strong>
+            <strong>{author.name}</strong>any
             <span>{author.role}</span>
           </div>
         </div>
@@ -67,8 +95,6 @@ export function Post({ id, author, content, publishAt }: IPostProps) {
               )
 
             case 'paragraph':
-              return <p key={info.id}>{info.content}</p>
-
             default:
               return <p key={info.id}>{info.content}</p>
           }
@@ -88,9 +114,15 @@ export function Post({ id, author, content, publishAt }: IPostProps) {
 
       <div className={styles.commentList}>
         {comments.map(comment => {
-          const hasComment = comment !== ''
+          const hasComment = comment.content.length > 0
 
-          return hasComment ? <Comment key={comment} comment={comment} /> : null
+          return hasComment ? (
+            <Comment
+              key={comment.id}
+              comment={comment}
+              deleteComment={id => deletarComentario(id)}
+            />
+          ) : null
         })}
       </div>
     </article>
