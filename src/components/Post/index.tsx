@@ -75,7 +75,7 @@ export function Post({ id, author, content, publishAt }: IPostProps) {
           <Avatar src={author.avatarUrl} />
 
           <div className={styles.authorInfo}>
-            <strong>{author.name}</strong>any
+            <strong>{author.name}</strong>
             <span>{author.role}</span>
           </div>
         </div>
